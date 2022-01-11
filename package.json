@@ -1,0 +1,40 @@
+{
+  "name": "amu-tp-react-todo",
+  "version": "1.0.0",
+  "description": "Dans ce TP, vous allez créer une Single Page Application (SPA) avec React dans le but de découvrir différentes notions telles que les composants, les states et props, la gestion des modules et du bundling, les appels HTTP et les promesses, le routage et bien sur les tests unitaires qui assureront la qualité et la non régression de vos codes.",
+  "main": "jest.config.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "webpack --mode development",
+    "watch": "webpack --mode development --watch",
+    "serve": "live-server --entry-file=./index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FloFloDht/amu-tp-react-todo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FloFloDht/amu-tp-react-todo/issues"
+  },
+  "homepage": "https://github.com/FloFloDht/amu-tp-react-todo#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.16.8",
+    "@babel/core": "^7.16.7",
+    "@babel/preset-env": "^7.16.8",
+    "@babel/preset-react": "^7.16.7",
+    "babel-loader": "^8.2.3",
+    "live-server": "^1.2.1",
+    "webpack": "^5.65.0",
+    "webpack-cli": "^4.9.1"
+  },
+  "dependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  }
+}
