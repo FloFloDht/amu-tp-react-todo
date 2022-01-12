@@ -35,7 +35,7 @@ export const addTaskToApi = (task) => {
             apiKey: SUPABASE_API_KEY,
             Prefer: "return=representation",
         },
-    }).then((response) => response.json())
+    }).then((response) => response.json()).then(tasks => tasks[0])
 }
 
 /**
@@ -48,4 +48,20 @@ export const loadTasksFromApi = () => {
             apiKey: SUPABASE_API_KEY,
         },
     }).then((response) => response.json())
+}
+
+
+export const loadTaskFromApi = (id) => {
+    return fetch(`${SUPABASE_URL}?id=eq.${id}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            apiKey: SUPABASE_API_KEY,
+            Prefer: "return=representation",
+        }
+    })
+        .then(response => response.json())
+        // La réponse contenant un tableau des tâches correspondantes
+        // Nous ne retournons que la première (et la seule)
+        .then(tasks => tasks[0]);
 }
