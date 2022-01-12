@@ -1,17 +1,38 @@
 // src/pages/TodoListPage.js
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TaskForm from "../components/TaskForm";
 import TodoList from "../components/TodoList";
 
-// On créé ici un tableau TODO_ITEMS qui contient deux objets 
-const TODO_ITEMS = [
-    { id: 1, text: "Faire les courses", done: false },
-    { id: 2, text: "Aller chercher les enfants", done: true },
-];
+const SUPABASE_URL = "https://bfxuknbmubeqdrtgqmrj.supabase.co/rest/v1/todosReact";
+const SUPABASE_API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MTgyNDk3MywiZXhwIjoxOTU3NDAwOTczfQ.KabUwP4iOJcH6PsOedizvsT3lrX4LSh7KDelwznXE3E"
 
 const TodoListPage = () => {
-    const [state, setState] = useState(TODO_ITEMS);
+
+    // Désormais, on prend un tableau vide comme valeur par défaut
+    // pour la liste des tâches. Ce tableau évoluera lors du chargement
+    // du composant grâce au useEffect ci-dessous
+    const [state, setState] = useState([]);
+
+    // On utilise le hook useEffect, qui permet de créer un comportement
+    // qui aura lieu lors de CHAQUE rendu du composant React
+    // mais en passant un tableau de dépendances vide en deuxième paramètres, on explique à React que ce comportement 
+    // ne devra avoir lieu qu'une seule fois, au chargement du composant
+    useEffect(() => {
+        // Appel HTTP vers Supabase
+        fetch(`${SUPABASE_URL}?order=created_at`, {
+            headers: {
+                apiKey: SUPABASE_API_KEY,
+            },
+        })
+            .then((response) => response.json())
+            .then((items) => {
+                // On remplace la valeur actuel de state
+                // par le tableau d'items venant de l'API
+                setState(items);
+            });
+    }, []);
+  
 
     const toggle = (id) => {
         // Récupérons l'index de la tâche concernée
@@ -30,10 +51,24 @@ const TodoListPage = () => {
     const addNewTask = (text) => {
         // Créons une nouvelle tâche avec le text tapé dans l'input
         const task = {
-            id: Date.now(),
             text: text,
             done: false
         };
+
+        // Appel HTTP vers Supabase en method POST
+       fetch(SUPABASE_URL, {
+               method: "POST",
+               body: JSON.stringify(task),
+               headers: {
+                   "Content-Type": "application/json",
+                   apiKey: SUPABASE_API_KEY,
+                   Prefer: "return=representation",
+               },
+           })
+               .then((response) => response.json())
+               .then((items) => {
+                   setState([...state, items[0]]);
+               });
 
         // Remplaçons le tableau de tâches actuel par une copie
         // qui contiendra en plus la nouvelle tâche :
